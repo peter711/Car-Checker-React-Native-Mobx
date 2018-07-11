@@ -11,20 +11,14 @@ class CarForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            car: {
-                name: 'Example name',
-                brand: 'Example brand'
-            }
+            name: '',
+            brand: ''
         }
     }
 
-    onAddCarPress() {
-        carListModel.addCar(this.state.car);
+    async onAddCarPress() {
+        await carListModel.addCar(this.state);
         this.props.navigation.navigate('Home');
-    }
-
-    handleChange(event) {
-        console.log(event.target.value);
     }
 
     render() {
@@ -34,11 +28,11 @@ class CarForm extends React.Component {
                     <Form>
                         <Item stackedLabel>
                             <Label>Name</Label>
-                            <Input value={this.state.car.name} onChange={this.handleChange}/>
+                            <Input value={this.state.name} onChangeText={text => this.setState({name: text})}/>
                         </Item>
                         <Item stackedLabel last>
                             <Label>Brand</Label>
-                            <Input value={this.state.car.brand}/>
+                            <Input value={this.state.brand} onChangeText={text => this.setState({brand: text})}/>
                         </Item>
                     </Form>
                     <Button style={styles.button} block light onPress={this.onAddCarPress.bind(this)}>

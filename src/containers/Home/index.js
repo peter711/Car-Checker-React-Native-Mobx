@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Header, Title, Content, Body, Icon, Text, View, Fab, Button } from 'native-base';
+import { Container, Header, Title, Content, Body, Icon, Text, View, Fab, Button, Spinner } from 'native-base';
 import { observer } from 'mobx-react/native'
 
 import styles from './styles';
@@ -39,6 +39,9 @@ class Home extends React.Component {
                         </Title>
                     </Body>
                 </Header>
+                {carListModel.loading
+                    && <Spinner/>
+                }
                 {carListModel.cars.length === 0
                     && renderEmptyList()}
                 {carListModel.cars.length > 0 &&
@@ -46,12 +49,7 @@ class Home extends React.Component {
                         <CarList cars={carListModel.cars} />
                     </Content>
                 }
-                <Fab
-                    direction="up"
-                    position="bottomRight"
-                    active={this.state.fabActive}
-                    onPress={this.onFabButtonPress.bind(this)}
-                >
+                <Fab direction="up" position="bottomRight" active={this.state.fabActive} onPress={this.onFabButtonPress.bind(this)}>
                     <Icon name="ios-add" />
                     <Button onPress={this.addCar.bind(this)}>
                         <Icon name="car" />

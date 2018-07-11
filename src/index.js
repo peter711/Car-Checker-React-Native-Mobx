@@ -12,7 +12,7 @@ const NEW_CAR_ROUTES_CONFIG = {
 const ROUTES_CONFIG = {
     Home: { screen: HomeScreen },
     About: { screen: AboutScreen },
-    NewCar: { screen: createBottomTabNavigator(NEW_CAR_ROUTES_CONFIG) }
+    NewCar: { screen: CarFormScreen }
 };
 
 export default createDrawerNavigator(ROUTES_CONFIG);
