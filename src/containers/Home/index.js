@@ -1,12 +1,11 @@
 import React from 'react';
-import { Container, Header, Title, Content, Body, Icon, Text, View, Fab, Button, Spinner } from 'native-base';
+import { Content, Body, Icon, Text, View, Spinner } from 'native-base';
 import { observer } from 'mobx-react/native'
 
+import { CarList, ScreenContainer, ScreenContent, ScreenHeader, FabButton } from '../../components';
+import { CarListModel } from '../../models';
+
 import styles from './styles';
-
-import CarList from '../../components/CarList';
-
-import carListModel from '../../models/CarListModel';
 
 class Home extends React.Component {
 
@@ -27,35 +26,29 @@ class Home extends React.Component {
 
     addCar() {
         this.props.navigation.navigate('NewCar');
+        this.setState({ fabActive: false });
     }
 
     render() {
         return (
-            <Container>
-                <Header>
-                    <Body>
-                        <Title>
-                            Home
-                        </Title>
-                    </Body>
-                </Header>
-                {carListModel.loading
+            <ScreenContainer>
+                <ScreenHeader title={'Cars'} onMenuPress={() => this.props.navigation.toggleDrawer()}/>
+                {CarListModel.loading
                     && <Spinner/>
                 }
-                {carListModel.cars.length === 0
+                {CarListModel.cars.length === 0
                     && renderEmptyList()}
-                {carListModel.cars.length > 0 &&
-                    <Content>
-                        <CarList cars={carListModel.cars} />
-                    </Content>
+                {CarListModel.cars.length > 0 &&
+                    <ScreenContent>
+                        <CarList cars={CarListModel.cars} />
+                    </ScreenContent>
                 }
-                <Fab direction="up" position="bottomRight" active={this.state.fabActive} onPress={this.onFabButtonPress.bind(this)}>
-                    <Icon name="ios-add" />
-                    <Button onPress={this.addCar.bind(this)}>
-                        <Icon name="car" />
-                    </Button>
-                </Fab>
-            </Container>
+                <FabButton
+                    active={this.state.fabActive}
+                    onFabButtonPress={() => this.setState({fabActive: !this.state.fabActive})}
+                    onCarButtonPress={this.addCar.bind(this)}
+                />
+            </ScreenContainer>
         );
     }
 }

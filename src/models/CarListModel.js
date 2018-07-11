@@ -1,7 +1,6 @@
 import { observable, decorate, configure, action } from 'mobx';
 import { storeData, retrieveData } from '../common/asyncStorageCommons';
 
-
 configure({ enforceActions: true });
 
 const CARS_STORAGE_KEY = 'CARS';

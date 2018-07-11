@@ -1,18 +1,24 @@
 import {
-    createDrawerNavigator,
-    createBottomTabNavigator
+    createStackNavigator,
+    createDrawerNavigator
 } from 'react-navigation';
 
 import { HomeScreen, AboutScreen, CarFormScreen } from './containers';
 
-const NEW_CAR_ROUTES_CONFIG = {
-    CarForm: CarFormScreen
-};
-
-const ROUTES_CONFIG = {
+const DRAWER_ROUTES_CONFIG = {
     Home: { screen: HomeScreen },
     About: { screen: AboutScreen },
-    NewCar: { screen: CarFormScreen }
 };
 
-export default createDrawerNavigator(ROUTES_CONFIG);
+const drawerNavigation = createDrawerNavigator(DRAWER_ROUTES_CONFIG);
+
+drawerNavigation.navigationOptions = {
+    header: null
+}
+
+const appNavigation = createStackNavigator({
+    App: { screen: drawerNavigation },
+    NewCar: { screen: CarFormScreen }
+});
+
+export default appNavigation;
