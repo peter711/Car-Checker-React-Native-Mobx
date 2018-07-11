@@ -1,7 +1,7 @@
 import React from 'react';
 import { Header, Body, Title, Icon, Left, Right, Button } from 'native-base';
 
-const ScreenHeader = ({ title, onMenuPress }) => {
+const ScreenHeader = ({ title, onMenuPress, rightContent }) => {
     return (
         <Header>
             <Left>
@@ -14,7 +14,9 @@ const ScreenHeader = ({ title, onMenuPress }) => {
                     {title}
                 </Title>
             </Body>
-            <Right />
+            <Right>
+                {rightContent}
+            </Right>
         </Header>
     );
 }

@@ -1,11 +1,20 @@
 import React from 'react';
-import { Content, Body, Icon, Text, View, Spinner } from 'native-base';
+import { Icon, Text, View, Spinner, ActionSheet } from 'native-base';
 import { observer } from 'mobx-react/native'
 
 import { CarList, ScreenContainer, ScreenContent, ScreenHeader, FabButton } from '../../components';
 import { CarListModel } from '../../models';
 
+import TrashButton from './TrashButton';
+
 import styles from './styles';
+
+const BUTTONS = [
+    { text: 'Remove all' },
+    { text: "Cancel" }
+];
+
+const CANCEL_INDEX = 1;
 
 class Home extends React.Component {
 
@@ -16,7 +25,8 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fabActive: false
+            fabActive: false,
+            clicked: undefined
         }
     }
 
@@ -29,10 +39,20 @@ class Home extends React.Component {
         this.setState({ fabActive: false });
     }
 
+    showActionSheet() {
+        ActionSheet.show({
+            options: BUTTONS,
+            cancelButtonIndex: CANCEL_INDEX,
+            title: 'Select an option'
+        }, buttonIndex => {
+            this.setState({clicked: BUTTONS[buttonIndex]})
+        });
+    }
+
     render() {
         return (
             <ScreenContainer>
-                <ScreenHeader title={'Cars'} onMenuPress={() => this.props.navigation.toggleDrawer()}/>
+                <ScreenHeader title={'Cars'} onMenuPress={() => this.props.navigation.toggleDrawer()} rightContent={<TrashButton onPress={() => this.showActionSheet()}/>}/>
                 {CarListModel.loading
                     && <Spinner/>
                 }

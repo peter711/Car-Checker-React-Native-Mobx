@@ -20,7 +20,7 @@ class CarListModel {
 
     _onCarsRetrieved(cars) {
         action(cars => {
-            this.cars = cars;
+            this.cars = cars || [];
             this.loading = false;
         })(cars);
     }
