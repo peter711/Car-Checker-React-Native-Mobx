@@ -1,17 +1,28 @@
 import React from 'react';
-import { Card, CardItem, Icon, Right, Text } from 'native-base';
+import { SwipeRow, View, Text, Button, Icon } from 'native-base';
+
+import styles from './styles';
 
 const CarListItem = ({ car }) => {
     return (
-        <Card>
-            <CardItem>
-                <Icon active name="logo-googleplus" />
-                <Text>{car.name}</Text>
-                <Right>
-                    <Icon name="arrow-forward" />
-                </Right>
-            </CardItem>
-        </Card>
+        <SwipeRow
+            rightOpenValue={-75}
+            body={
+                <View style={styles.swipeRowBody}>
+                    <View style={styles.swipeRowTitleRow}>
+                        <Icon style={styles.swipeRowIcon} name="ios-car-outline" />
+                        <Text style={styles.swipeRowTitle}>
+                            {car.name} {car.brand}
+                        </Text>
+                    </View>
+                </View>
+            }
+            right={
+                <Button danger onPress={() => alert('Trash')}>
+                    <Icon active name="trash" />
+                </Button>
+            }
+        />
     );
 };
 

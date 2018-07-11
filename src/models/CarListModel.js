@@ -1,5 +1,5 @@
-import { observable, decorate, configure, action } from 'mobx';
-import { storeData, retrieveData } from '../common/asyncStorageCommons';
+import { observable, decorate, configure, action, runInAction } from 'mobx';
+import { storeData, retrieveData, removeItem } from '../common/asyncStorageCommons';
 
 configure({ enforceActions: true });
 
@@ -10,7 +10,15 @@ class CarListModel {
     cars = [];
 
     constructor() {
-        retrieveData(CARS_STORAGE_KEY).then(res => this._onCarsRetrieved(res));
+        Promise.race([
+            retrieveData(CARS_STORAGE_KEY),
+            new Promise(resolve => {
+                setTimeout(
+                    () => resolve(),
+                    5 * 1000
+                )
+            })
+        ]).then(res => this._onCarsRetrieved(res));
     }
 
     async addCar(e) {
@@ -18,18 +26,24 @@ class CarListModel {
         return storeData(CARS_STORAGE_KEY, this.cars);
     }
 
+    async removeAllCars() {
+        await removeItem(CARS_STORAGE_KEY);
+        runInAction(() => this.cars = []);
+    }
+
     _onCarsRetrieved(cars) {
-        action(cars => {
+        runInAction(() => {
             this.cars = cars || [];
             this.loading = false;
-        })(cars);
+        });
     }
 }
 
 decorate(CarListModel, {
     loading: observable,
     cars: observable,
-    addCar: action
+    addCar: action,
+    removeAllCars: action
 });
 
 const carListModel = new CarListModel();

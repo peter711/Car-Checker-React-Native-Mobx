@@ -1,8 +1,9 @@
 import React from 'react';
-import { Icon, Text, View, Spinner, ActionSheet } from 'native-base';
+import { Alert } from 'react-native';
+import { Icon, Text, View, Spinner, ActionSheet, Content } from 'native-base';
 import { observer } from 'mobx-react/native'
 
-import { CarList, ScreenContainer, ScreenContent, ScreenHeader, FabButton } from '../../components';
+import { CarList, ScreenContainer, ScreenHeader, FabButton } from '../../components';
 import { CarListModel } from '../../models';
 
 import TrashButton from './TrashButton';
@@ -30,6 +31,15 @@ class Home extends React.Component {
         }
     }
 
+    componentWillUpdate(nextProps, nextState) {
+        if (nextState.clicked === BUTTONS[0]) {
+            showRemoveConfirmationAlert({
+                onRemovePress: removeAllCars
+            });
+            this.setState({ clicked: null });
+        }
+    }
+
     onFabButtonPress() {
         this.setState({ fabActive: !this.state.fabActive })
     }
@@ -45,27 +55,27 @@ class Home extends React.Component {
             cancelButtonIndex: CANCEL_INDEX,
             title: 'Select an option'
         }, buttonIndex => {
-            this.setState({clicked: BUTTONS[buttonIndex]})
+            this.setState({ clicked: BUTTONS[buttonIndex] })
         });
     }
 
     render() {
         return (
             <ScreenContainer>
-                <ScreenHeader title={'Cars'} onMenuPress={() => this.props.navigation.toggleDrawer()} rightContent={<TrashButton onPress={() => this.showActionSheet()}/>}/>
+                <ScreenHeader title={'Cars'} onMenuPress={() => this.props.navigation.toggleDrawer()} rightContent={<TrashButton onPress={() => this.showActionSheet()} />} />
                 {CarListModel.loading
-                    && <Spinner/>
+                    && <Spinner />
                 }
                 {CarListModel.cars.length === 0
                     && renderEmptyList()}
                 {CarListModel.cars.length > 0 &&
-                    <ScreenContent>
+                    <Content>
                         <CarList cars={CarListModel.cars} />
-                    </ScreenContent>
+                    </Content>
                 }
                 <FabButton
                     active={this.state.fabActive}
-                    onFabButtonPress={() => this.setState({fabActive: !this.state.fabActive})}
+                    onFabButtonPress={() => this.setState({ fabActive: !this.state.fabActive })}
                     onCarButtonPress={this.addCar.bind(this)}
                 />
             </ScreenContainer>
@@ -87,3 +97,19 @@ function renderEmptyList() {
         </View>
     );
 }
+
+async function removeAllCars() {
+    return CarListModel.removeAllCars();
+}
+
+function showRemoveConfirmationAlert({ onRemovePress } = {}) {
+    Alert.alert(
+        'Remove cars',
+        'Are you sure you want to remove all record ?',
+        [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Remove', onPress: () => onRemovePress()}
+        ]
+    )
+}
+

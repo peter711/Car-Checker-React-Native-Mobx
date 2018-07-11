@@ -1,7 +1,9 @@
+import React from 'react';
 import {
     createStackNavigator,
     createDrawerNavigator
 } from 'react-navigation';
+import { Root } from "native-base";
 
 import { HomeScreen, AboutScreen, CarFormScreen } from './containers';
 
@@ -16,9 +18,15 @@ drawerNavigation.navigationOptions = {
     header: null
 }
 
-const appNavigation = createStackNavigator({
+const AppNavigation = createStackNavigator({
     App: { screen: drawerNavigation },
     NewCar: { screen: CarFormScreen }
 });
 
-export default appNavigation;
+const App = () => (
+    <Root>
+        <AppNavigation/>
+    </Root>
+)
+
+export default App;
