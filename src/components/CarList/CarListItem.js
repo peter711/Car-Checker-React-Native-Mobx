@@ -3,7 +3,7 @@ import { SwipeRow, View, Text, Button, Icon } from 'native-base';
 
 import styles from './styles';
 
-const CarListItem = ({ car }) => {
+const CarListItem = ({ car, onDetailsClick }) => {
     return (
         <SwipeRow
             rightOpenValue={-75}
@@ -14,6 +14,11 @@ const CarListItem = ({ car }) => {
                         <Text style={styles.swipeRowTitle}>
                             {car.name} {car.brand}
                         </Text>
+                    </View>
+                    <View style={styles.swipeButtonRow}>
+                        <Button transparent onPress={() => onDetailsClick(car)}>
+                            <Icon style={styles.detailsIcon} active name="information-circle" />
+                        </Button>
                     </View>
                 </View>
             }

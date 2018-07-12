@@ -5,7 +5,12 @@ import {
 } from 'react-navigation';
 import { Root } from "native-base";
 
-import { HomeScreen, AboutScreen, CarFormScreen } from './containers';
+import {
+    HomeScreen,
+    AboutScreen,
+    CarFormScreen,
+    CarTilesScreen
+} from './containers';
 
 const DRAWER_ROUTES_CONFIG = {
     Home: { screen: HomeScreen },
@@ -20,7 +25,8 @@ drawerNavigation.navigationOptions = {
 
 const AppNavigation = createStackNavigator({
     App: { screen: drawerNavigation },
-    NewCar: { screen: CarFormScreen }
+    NewCar: { screen: CarFormScreen },
+    CarTiles: { screen: CarTilesScreen }
 });
 
 const App = () => (

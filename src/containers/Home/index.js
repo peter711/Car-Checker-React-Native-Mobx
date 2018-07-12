@@ -59,6 +59,12 @@ class Home extends React.Component {
         });
     }
 
+    onDetailsItemListClick(car) {
+        this.props.navigation.navigate('CarTiles', {
+            car
+        });
+    }
+
     render() {
         return (
             <ScreenContainer>
@@ -70,7 +76,7 @@ class Home extends React.Component {
                     && renderEmptyList()}
                 {CarListModel.cars.length > 0 &&
                     <Content>
-                        <CarList cars={CarListModel.cars} />
+                        <CarList cars={CarListModel.cars} onDetailsClick={this.onDetailsItemListClick.bind(this)}/>
                     </Content>
                 }
                 <FabButton

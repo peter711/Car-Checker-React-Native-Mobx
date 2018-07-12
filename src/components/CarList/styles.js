@@ -19,10 +19,16 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingBottom: 10,
         paddingLeft: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     swipeRowTitleRow: {
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    swipeButtonRow: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
     },
     swipeRowIcon: {
         paddingLeft: 15,
@@ -30,6 +36,9 @@ const styles = StyleSheet.create({
     },
     swipeRowTitle: {
         fontSize: 18
+    },
+    detailsIcon: {
+        fontSize: 30
     }
 });
 

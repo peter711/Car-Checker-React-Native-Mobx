@@ -1,9 +1,9 @@
 import React from 'react';
-import { Content, Form, Item, Input, Label, Button, Text, Card, CardItem, Body, Icon } from 'native-base';
+import { Item, Input, Label, Button, Text, Card, CardItem, Body, Icon } from 'native-base';
 import { observer } from 'mobx-react/native';
 
 import { ScreenContainer, ScreenContent } from '../../components';
-import { CarListModel } from '../../models';
+import { CarListModel, CarModel } from '../../models';
 
 import styles from './styles';
 
@@ -34,7 +34,11 @@ class CarForm extends React.Component {
     }
 
     async onAddCarPress() {
-        await CarListModel.addCar(this.state);
+        const car = new CarModel({
+            name: this.state.name,
+            brand: this.state.brand
+        });
+        await CarListModel.addCar(car);
         this.props.navigation.navigate('Home');
     }
 
