@@ -3,7 +3,9 @@ import { Item, Input, Label, Button, Text, Card, CardItem, Body, Icon } from 'na
 import { observer } from 'mobx-react/native';
 
 import { ScreenContainer, ScreenContent } from '../../components';
-import { CarListModel, CarModel } from '../../models';
+import { CarListModel, CarModel, PhotosModel } from '../../models';
+
+import PhotosModal from '../PhotosModal';
 
 import styles from './styles';
 
@@ -23,7 +25,9 @@ class CarForm extends React.Component {
         super(props);
         this.state = {
             name: '',
-            brand: ''
+            brand: '',
+            photo: undefined,
+            modalVisible: false
         }
     }
 
@@ -33,6 +37,12 @@ class CarForm extends React.Component {
         });
     }
 
+    componentWillUpdate(nextProps, nextState) {
+        if (this.state.modalVisible === false && PhotosModel.photos.length) {
+            PhotosModel.resetPhotos();
+        }
+    }
+
     async onAddCarPress() {
         const car = new CarModel({
             name: this.state.name,
@@ -40,6 +50,11 @@ class CarForm extends React.Component {
         });
         await CarListModel.addCar(car);
         this.props.navigation.navigate('Home');
+    }
+
+    async handlePhotoButtonPress() {
+        PhotosModel.loadPhotos();
+        this.setState({ modalVisible: true });
     }
 
     render() {
@@ -57,9 +72,18 @@ class CarForm extends React.Component {
                                     <Label>Brand</Label>
                                     <Input value={this.state.brand} onChangeText={text => this.setState({ brand: text })} />
                                 </Item>
+                                <Button onPress={this.handlePhotoButtonPress.bind(this)}>
+                                    <Text>Photo</Text>
+                                </Button>
                             </Body>
                         </CardItem>
                     </Card>
+                    <PhotosModal
+                        visible={this.state.modalVisible}
+                        onSelectClick={photo => this.setState({ photo, modalVisible: false })}
+                        onCloseClick={() => this.setState({ modalVisible: false })}
+                        photos={PhotosModel.photos}
+                    />
                 </ScreenContent>
             </ScreenContainer>
         );
