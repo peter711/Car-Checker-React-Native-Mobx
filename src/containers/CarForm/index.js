@@ -1,4 +1,5 @@
 import React from 'react';
+import { Image, View, Dimensions } from 'react-native';
 import { Item, Input, Label, Button, Text, Card, CardItem, Body, Icon } from 'native-base';
 import { observer } from 'mobx-react/native';
 
@@ -8,6 +9,9 @@ import { CarListModel, CarModel, PhotosModel } from '../../models';
 import PhotosModal from '../PhotosModal';
 
 import styles from './styles';
+
+const win = Dimensions.get('window');
+const ratio = win.width/541; 
 
 class CarForm extends React.Component {
 
@@ -61,6 +65,16 @@ class CarForm extends React.Component {
         return (
             <ScreenContainer>
                 <ScreenContent>
+                    {this.state.photo
+                        &&
+                        <Image
+                            style={{
+                                width: win.width,
+                                height: 362 * ratio
+                            }}
+                            source={{ uri: this.state.photo.node.image.uri }}
+                        />
+                    }
                     <Card>
                         <CardItem>
                             <Body>
